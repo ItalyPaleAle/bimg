@@ -45,7 +45,7 @@ type VipsMemoryInfo struct {
 
 // vipsSaveOptions represents the internal option used to talk with libvips.
 type vipsSaveOptions struct {
-	Speed          int
+	Effort         int
 	Quality        int
 	Compression    int
 	Type           ImageType
@@ -507,7 +507,7 @@ func vipsSave(image *C.VipsImage, o vipsSaveOptions) ([]byte, error) {
 	strip := C.int(boolToInt(o.StripMetadata))
 	lossless := C.int(boolToInt(o.Lossless))
 	palette := C.int(boolToInt(o.Palette))
-	speed := C.int(o.Speed)
+	effort := C.int(o.Effort)
 
 	if o.Type != 0 && !IsTypeSupportedSave(o.Type) {
 		return nil, fmt.Errorf("VIPS cannot save to %#v", ImageTypes[o.Type])
@@ -523,7 +523,7 @@ func vipsSave(image *C.VipsImage, o vipsSaveOptions) ([]byte, error) {
 	case HEIF:
 		saveErr = C.vips_heifsave_bridge(tmpImage, &ptr, &length, strip, quality, lossless)
 	case AVIF:
-		saveErr = C.vips_avifsave_bridge(tmpImage, &ptr, &length, strip, quality, lossless, speed)
+		saveErr = C.vips_avifsave_bridge(tmpImage, &ptr, &length, strip, quality, lossless, effort)
 	default:
 		saveErr = C.vips_jpegsave_bridge(tmpImage, &ptr, &length, strip, quality, interlace)
 	}

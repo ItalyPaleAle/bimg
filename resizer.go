@@ -187,7 +187,10 @@ func saveImage(image *C.VipsImage, o Options) ([]byte, error) {
 		StripMetadata:  o.StripMetadata,
 		Lossless:       o.Lossless,
 		Palette:        o.Palette,
-		Speed:          o.Speed,
+		Effort:         o.Effort,
+	}
+	if o.Effort == 0 && o.Speed != 0 {
+		saveOptions.Effort = o.Speed
 	}
 	// Finally get the resultant buffer
 	return vipsSave(image, saveOptions)

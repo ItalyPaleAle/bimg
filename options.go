@@ -226,8 +226,10 @@ type Options struct {
 	OutputICC      string
 	InputICC       string
 	Palette        bool
-	// Speed defines the AVIF encoders CPU effort. Valid values are 0-8.
-	Speed int
+	// Effort defines the AVIF encoders CPU effort. Valid values are 0-8.
+	// Speed is the legacy name, used as fallback.
+	Effort int
+	Speed  int
 
 	// private fields
 	autoRotateOnly bool

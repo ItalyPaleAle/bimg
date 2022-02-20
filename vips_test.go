@@ -63,7 +63,7 @@ func TestVipsSaveAvif(t *testing.T) {
 		t.Skipf("Format %#v is not supported", ImageTypes[AVIF])
 	}
 	image, _, _ := vipsRead(readImage("test.jpg"))
-	options := vipsSaveOptions{Quality: 95, Type: AVIF, Speed: 8}
+	options := vipsSaveOptions{Quality: 95, Type: AVIF, Effort: 8}
 	buf, err := vipsSave(image, options)
 	if err != nil {
 		t.Fatalf("Error saving image type %v: %v", ImageTypes[AVIF], err)
