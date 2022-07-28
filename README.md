@@ -49,18 +49,17 @@ If you're using `gopkg.in`, you can still rely in the `v0` without worrying abou
 
 ## Prerequisites
 
-- [libvips](https://github.com/libvips/libvips) 8.3+ (8.8+ recommended)
+- [libvips](https://github.com/libvips/libvips) 8.13+
 - C compatible compiler such as gcc 4.6+ or clang 3.0+
-- Go 1.3+
+- Go 1.18+
 
 **Note**: 
- * `libvips` v8.3+ is required for GIF, PDF and SVG support.
  * `libvips` v8.9+ is required for AVIF support. `libheif` compiled with a AVIF en-/decoder also needs to be present.
 
 ## Installation
 
 ```bash
-go get -u github.com/h2non/bimg
+go install github.com/h2non/bimg
 ```
 
 ### libvips
