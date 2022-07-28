@@ -59,9 +59,6 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 #   apt-get clean && \
 #   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Go lint
-RUN go get -u golang.org/x/lint/golint
-
 # ENV LD_LIBRARY_PATH="/vips/lib:$LD_LIBRARY_PATH"
 # ENV PKG_CONFIG_PATH="/vips/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/X11/lib/pkgconfig"
 
