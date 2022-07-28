@@ -17,7 +17,10 @@ func TestImageResize(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_resize_out.jpg", buf)
+	err = Write("testdata/test_resize_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageGifResize(t *testing.T) {
@@ -32,7 +35,10 @@ func TestImageGifResize(t *testing.T) {
 			t.Error(err)
 		}
 
-		Write("testdata/test_resize_out.gif", buf)
+		err = Write("testdata/test_resize_out.gif", buf)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -61,7 +67,10 @@ func TestImageGifToJpeg(t *testing.T) {
 			t.Errorf("Cannot process the image: %#v", err)
 		}
 
-		Write("testdata/test_gif.jpg", buf)
+		err = Write("testdata/test_gif.jpg", buf)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -76,7 +85,10 @@ func TestImagePdfToJpeg(t *testing.T) {
 			t.Errorf("Cannot process the image: %#v", err)
 		}
 
-		Write("testdata/test_pdf.jpg", buf)
+		err = Write("testdata/test_pdf.jpg", buf)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -91,7 +103,10 @@ func TestImageSvgToJpeg(t *testing.T) {
 			t.Errorf("Cannot process the image: %#v", err)
 		}
 
-		Write("testdata/test_svg.jpg", buf)
+		err = Write("testdata/test_svg.jpg", buf)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -106,7 +121,10 @@ func TestImageResizeAndCrop(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_resize_crop_out.jpg", buf)
+	err = Write("testdata/test_resize_crop_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageExtract(t *testing.T) {
@@ -120,7 +138,10 @@ func TestImageExtract(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_extract_out.jpg", buf)
+	err = Write("testdata/test_extract_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageExtractZero(t *testing.T) {
@@ -134,7 +155,10 @@ func TestImageExtractZero(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_extract_zero_out.jpg", buf)
+	err = Write("testdata/test_extract_zero_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageEnlarge(t *testing.T) {
@@ -148,7 +172,10 @@ func TestImageEnlarge(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_enlarge_out.jpg", buf)
+	err = Write("testdata/test_enlarge_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageEnlargeAndCrop(t *testing.T) {
@@ -162,7 +189,10 @@ func TestImageEnlargeAndCrop(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_enlarge_crop_out.jpg", buf)
+	err = Write("testdata/test_enlarge_crop_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageCrop(t *testing.T) {
@@ -176,7 +206,10 @@ func TestImageCrop(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_crop_out.jpg", buf)
+	err = Write("testdata/test_crop_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageCropByWidth(t *testing.T) {
@@ -190,7 +223,10 @@ func TestImageCropByWidth(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_crop_width_out.jpg", buf)
+	err = Write("testdata/test_crop_width_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageCropByHeight(t *testing.T) {
@@ -204,7 +240,10 @@ func TestImageCropByHeight(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_crop_height_out.jpg", buf)
+	err = Write("testdata/test_crop_height_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageThumbnail(t *testing.T) {
@@ -218,7 +257,10 @@ func TestImageThumbnail(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_thumbnail_out.jpg", buf)
+	err = Write("testdata/test_thumbnail_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageWatermark(t *testing.T) {
@@ -248,7 +290,10 @@ func TestImageWatermark(t *testing.T) {
 		t.Fatal("Image is not jpeg")
 	}
 
-	Write("testdata/test_watermark_text_out.jpg", buf)
+	err = Write("testdata/test_watermark_text_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageWatermarkWithImage(t *testing.T) {
@@ -275,7 +320,10 @@ func TestImageWatermarkWithImage(t *testing.T) {
 		t.Fatal("Image is not jpeg")
 	}
 
-	Write("testdata/test_watermark_image_out.jpg", buf)
+	err = Write("testdata/test_watermark_image_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageWatermarkNoReplicate(t *testing.T) {
@@ -306,7 +354,10 @@ func TestImageWatermarkNoReplicate(t *testing.T) {
 		t.Fatal("Image is not jpeg")
 	}
 
-	Write("testdata/test_watermark_replicate_out.jpg", buf)
+	err = Write("testdata/test_watermark_replicate_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageZoom(t *testing.T) {
@@ -327,7 +378,10 @@ func TestImageZoom(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_zoom_out.jpg", buf)
+	err = Write("testdata/test_zoom_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageFlip(t *testing.T) {
@@ -335,7 +389,10 @@ func TestImageFlip(t *testing.T) {
 	if err != nil {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
-	Write("testdata/test_flip_out.jpg", buf)
+	err = Write("testdata/test_flip_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageFlop(t *testing.T) {
@@ -343,7 +400,10 @@ func TestImageFlop(t *testing.T) {
 	if err != nil {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
-	Write("testdata/test_flop_out.jpg", buf)
+	err = Write("testdata/test_flop_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageRotate(t *testing.T) {
@@ -351,7 +411,10 @@ func TestImageRotate(t *testing.T) {
 	if err != nil {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
-	Write("testdata/test_image_rotate_out.jpg", buf)
+	err = Write("testdata/test_image_rotate_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageAutoRotate(t *testing.T) {
@@ -374,20 +437,25 @@ func TestImageAutoRotate(t *testing.T) {
 	}
 
 	for index, test := range tests {
-		img := initImage(test.file)
-		buf, err := img.AutoRotate()
-		if err != nil {
-			t.Errorf("Cannot process the image: %#v", err)
-		}
-		Write(fmt.Sprintf("testdata/test_autorotate_%d_out.jpg", index), buf)
-
-		meta, err := img.Metadata()
-		if err != nil {
-			t.Errorf("Cannot read image metadata: %#v", err)
-		}
-		if meta.Orientation != test.orientation {
-			t.Errorf("Invalid image orientation for %s: %d != %d", test.file, meta.Orientation, test.orientation)
-		}
+		t.Run(test.file, func(t *testing.T) {
+			img := initImage(test.file)
+			buf, err := img.AutoRotate()
+			if err != nil {
+				t.Errorf("Cannot process the image: %#v", err)
+			}
+			err = Write(fmt.Sprintf("testdata/test_autorotate_%d_out.jpg", index), buf)
+			if err != nil {
+				t.Error(err)
+			}
+	
+			meta, err := img.Metadata()
+			if err != nil {
+				t.Errorf("Cannot read image metadata: %#v", err)
+			}
+			if meta.Orientation != test.orientation {
+				t.Errorf("Invalid image orientation for %s: %d != %d", test.file, meta.Orientation, test.orientation)
+			}
+		})
 	}
 }
 
@@ -396,7 +464,10 @@ func TestImageConvert(t *testing.T) {
 	if err != nil {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
-	Write("testdata/test_image_convert_out.png", buf)
+	err = Write("testdata/test_image_convert_out.png", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestTransparentImageConvert(t *testing.T) {
@@ -409,7 +480,10 @@ func TestTransparentImageConvert(t *testing.T) {
 	if err != nil {
 		t.Errorf("Cannot process the image: %#v", err)
 	}
-	Write("testdata/test_transparent_image_convert_out.jpg", buf)
+	err = Write("testdata/test_transparent_image_convert_out.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageMetadata(t *testing.T) {
@@ -454,6 +528,9 @@ func TestImageColourspace(t *testing.T) {
 		}
 
 		interpretation, err := ImageInterpretation(buf)
+		if err != nil {
+			t.Errorf("Cannot interpolate the image: %#v", err)
+		}
 		if interpretation != test.interpretation {
 			t.Errorf("Invalid colourspace")
 		}
@@ -498,7 +575,10 @@ func TestFluentInterface(t *testing.T) {
 		t.Fatal("Invalid image type")
 	}
 
-	Write("testdata/test_image_fluent_out.png", image.Image())
+	err = Write("testdata/test_image_fluent_out.png", image.Image())
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageSmartCrop(t *testing.T) {
@@ -518,7 +598,10 @@ func TestImageSmartCrop(t *testing.T) {
 		t.Error(err)
 	}
 
-	Write("testdata/test_smart_crop.jpg", buf)
+	err = Write("testdata/test_smart_crop.jpg", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageTrim(t *testing.T) {
@@ -538,11 +621,13 @@ func TestImageTrim(t *testing.T) {
 		t.Errorf("The image wasn't trimmed.")
 	}
 
-	Write("testdata/transparent_trim.png", buf)
+	err = Write("testdata/transparent_trim.png", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageTrimParameters(t *testing.T) {
-
 	if !(VipsMajorVersion >= 8 && VipsMinorVersion >= 6) {
 		t.Skipf("Skipping this test, libvips doesn't meet version requirement %s >= 8.6", VipsVersion)
 	}
@@ -563,7 +648,10 @@ func TestImageTrimParameters(t *testing.T) {
 		t.Errorf("The image wasn't trimmed.")
 	}
 
-	Write("testdata/parameter_trim.png", buf)
+	err = Write("testdata/parameter_trim.png", buf)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestImageLength(t *testing.T) {

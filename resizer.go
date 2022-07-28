@@ -232,7 +232,7 @@ func transformImage(image *C.VipsImage, o Options, shrink int, residual float64)
 	var err error
 	// Use vips_shrink with the integral reduction
 	if shrink > 1 {
-		image, residual, err = shrinkImage(image, o, residual, shrink)
+		image, residual, err = shrinkImage(image, o, shrink)
 		if err != nil {
 			return nil, err
 		}
@@ -289,7 +289,11 @@ func applyEffects(image *C.VipsImage, o Options) (*C.VipsImage, error) {
 }
 
 func extractOrEmbedImage(image *C.VipsImage, o Options) (*C.VipsImage, error) {
-	var err error
+	var (
+		err           error
+		left, top     int
+		width, height int
+	)
 	inWidth := int(image.Xsize)
 	inHeight := int(image.Ysize)
 
@@ -299,31 +303,27 @@ func extractOrEmbedImage(image *C.VipsImage, o Options) (*C.VipsImage, error) {
 		if inWidth <= o.Width && inHeight <= o.Height {
 			break
 		}
-		width := int(math.Min(float64(inWidth), float64(o.Width)))
-		height := int(math.Min(float64(inHeight), float64(o.Height)))
+		width = int(math.Min(float64(inWidth), float64(o.Width)))
+		height = int(math.Min(float64(inHeight), float64(o.Height)))
 		image, err = vipsSmartCrop(image, width, height)
-		break
 	case o.Crop:
 		// it's already at an appropriate size, return immediately
 		if inWidth <= o.Width && inHeight <= o.Height {
 			break
 		}
-		width := int(math.Min(float64(inWidth), float64(o.Width)))
-		height := int(math.Min(float64(inHeight), float64(o.Height)))
+		width = int(math.Min(float64(inWidth), float64(o.Width)))
+		height = int(math.Min(float64(inHeight), float64(o.Height)))
 		left, top := calculateCrop(inWidth, inHeight, o.Width, o.Height, o.Gravity)
 		left, top = int(math.Max(float64(left), 0)), int(math.Max(float64(top), 0))
 		image, err = vipsExtract(image, left, top, width, height)
-		break
 	case o.Embed:
-		left, top := (o.Width-inWidth)/2, (o.Height-inHeight)/2
+		left, top = (o.Width-inWidth)/2, (o.Height-inHeight)/2
 		image, err = vipsEmbed(image, left, top, o.Width, o.Height, o.Extend, o.Background)
-		break
 	case o.Trim:
-		left, top, width, height, err := vipsTrim(image, o.Background, o.Threshold)
+		left, top, width, height, err = vipsTrim(image, o.Background, o.Threshold)
 		if err == nil {
 			image, err = vipsExtract(image, left, top, width, height)
 		}
-		break
 	case o.Top != 0 || o.Left != 0 || o.AreaWidth != 0 || o.AreaHeight != 0:
 		if o.AreaWidth == 0 {
 			o.AreaWidth = o.Width
@@ -335,7 +335,6 @@ func extractOrEmbedImage(image *C.VipsImage, o Options) (*C.VipsImage, error) {
 			return nil, errors.New("Extract area width/height params are required")
 		}
 		image, err = vipsExtract(image, o.Left, o.Top, o.AreaWidth, o.AreaHeight)
-		break
 	}
 
 	return image, err
@@ -345,7 +344,7 @@ func rotateAndFlipImage(image *C.VipsImage, o Options) (*C.VipsImage, bool, erro
 	var err error
 	var rotated bool
 
-	if o.NoAutoRotate == false {
+	if !o.NoAutoRotate {
 		rotation, flip := calculateRotationAndFlip(image, o.Rotate)
 		if flip {
 			o.Flip = flip
@@ -382,7 +381,7 @@ func watermarkImageWithText(image *C.VipsImage, w Watermark) (*C.VipsImage, erro
 		w.Font = WatermarkFont
 	}
 	if w.Width == 0 {
-		w.Width = int(math.Floor(float64(image.Xsize / 6)))
+		w.Width = int(float64(image.Xsize / 6))
 	}
 	if w.DPI == 0 {
 		w.DPI = 150
@@ -447,7 +446,7 @@ func zoomImage(image *C.VipsImage, zoom int) (*C.VipsImage, error) {
 	return vipsZoom(image, zoom+1)
 }
 
-func shrinkImage(image *C.VipsImage, o Options, residual float64, shrink int) (*C.VipsImage, float64, error) {
+func shrinkImage(image *C.VipsImage, o Options, shrink int) (*C.VipsImage, float64, error) {
 	// Use vips_shrink with the integral reduction
 	image, err := vipsShrink(image, shrink)
 	if err != nil {
@@ -458,6 +457,7 @@ func shrinkImage(image *C.VipsImage, o Options, residual float64, shrink int) (*
 	residualx := float64(o.Width) / float64(image.Xsize)
 	residualy := float64(o.Height) / float64(image.Ysize)
 
+	var residual float64
 	if o.Crop {
 		residual = math.Max(residualx, residualy)
 	} else {
@@ -537,7 +537,6 @@ func imageCalculations(o *Options, inWidth, inHeight int) float64 {
 	default:
 		o.Width = inWidth
 		o.Height = inHeight
-		break
 	}
 
 	return factor
@@ -583,28 +582,25 @@ func calculateRotationAndFlip(image *C.VipsImage, angle Angle) (Angle, bool) {
 	switch vipsExifOrientation(image) {
 	case 6:
 		rotate = D90
-		break
 	case 3:
 		rotate = D180
-		break
 	case 8:
 		rotate = D270
-		break
 	case 2:
 		flip = true
-		break // flip 1
+		// flip 1
 	case 7:
 		flip = true
 		rotate = D270
-		break // flip 6
+		// flip 6
 	case 4:
 		flip = true
 		rotate = D180
-		break // flip 3
+		// flip 3
 	case 5:
 		flip = true
 		rotate = D90
-		break // flip 8
+		// flip 8
 	}
 
 	return rotate, flip

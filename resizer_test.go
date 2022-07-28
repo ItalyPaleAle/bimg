@@ -30,7 +30,10 @@ func TestResize(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_out.jpg", newImg)
+	err = Write("testdata/test_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestResizeVerticalImage(t *testing.T) {
@@ -88,13 +91,16 @@ func TestResizeVerticalImage(t *testing.T) {
 				t.Fatalf("Invalid width: %d", size.Width)
 			}
 
-			Write(
+			err = Write(
 				fmt.Sprintf(
 					"testdata/test_vertical_%dx%d_out.%s",
 					options.Width,
 					options.Height,
 					ImageTypeName(source.format)),
 				image)
+				if err != nil {
+					t.Error(err)
+				}
 		}
 	}
 }
@@ -165,7 +171,10 @@ func TestResizePrecision(t *testing.T) {
 	// see https://github.com/h2non/bimg/issues/99
 	img := image.NewGray16(image.Rect(0, 0, 1920, 1080))
 	input := &bytes.Buffer{}
-	jpeg.Encode(input, img, nil)
+	err := jpeg.Encode(input, img, nil)
+	if err != nil {
+		t.Fatalf("jpeg.Encode error: %#v", err)
+	}
 
 	opts := Options{Width: 300}
 	newImg, err := Resize(input.Bytes(), opts)
@@ -252,6 +261,9 @@ func TestNoColorProfile(t *testing.T) {
 	}
 
 	metadata, err := Metadata(newImg)
+	if err != nil {
+		t.Errorf("Metadata(newImg) error: %#v", err)
+	}
 	if metadata.Profile == true {
 		t.Fatal("Invalid profile data")
 	}
