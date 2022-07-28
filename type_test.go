@@ -125,24 +125,12 @@ func TestIsTypeSupportedSave(t *testing.T) {
 	types := []struct {
 		name ImageType
 	}{
-		{JPEG}, {PNG}, {WEBP}, {GIF},
-	}
-	if VipsVersion >= "8.5.0" {
-		types = append(types, struct{ name ImageType }{TIFF})
-	}
-	if VipsVersion >= "8.8.0" {
-		types = append(types, struct{ name ImageType }{HEIF})
-	}
-	if VipsVersion >= "8.9.0" {
-		types = append(types, struct{ name ImageType }{AVIF})
-	}
-	if VipsVersion >= "8.12.0" {
-		types = append(types, struct{ name ImageType }{GIF})
+		{JPEG}, {PNG}, {WEBP}, {GIF}, {TIFF}, {HEIF}, {AVIF}, {GIF},
 	}
 
 	for _, n := range types {
-		if IsTypeSupportedSave(n.name) == false {
-			t.Fatalf("Image type %s is not valid", ImageTypes[n.name])
+		if !IsTypeSupportedSave(n.name) {
+			t.Errorf("Image type %s is not  valid", ImageTypes[n.name])
 		}
 	}
 }
@@ -156,15 +144,15 @@ func TestIsTypeNameSupportedSave(t *testing.T) {
 		{"png", true},
 		{"webp", true},
 		{"pdf", false},
-		{"tiff", VipsVersion >= "8.5.0"},
-		{"heif", VipsVersion >= "8.8.0"},
-		{"avif", VipsVersion >= "8.9.0"},
-		{"gif", VipsVersion >= "8.12.0"},
+		{"tiff", true},
+		{"heif", true},
+		{"avif", true},
+		{"gif", true},
 	}
 
 	for _, n := range types {
 		if IsTypeNameSupportedSave(n.name) != n.expected {
-			t.Fatalf("Image type %s is not valid", n.name)
+			t.Errorf("Image type %s is not valid", n.name)
 		}
 	}
 }
