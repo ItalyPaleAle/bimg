@@ -1,3 +1,11 @@
+v1.2.0 (italypaleale) / 2022-07-28
+==================================
+
+  * Module is now optimized for libvips 8.13 only
+  * Added "Effort" parameter to control effort (speed) of AVIF and PNG encoding
+  * Added dev container
+  * Using Go 1.18 and switch to Go modules
+  * Fixed tests
 
 v1.1.9 / 2022-04-05
 ===================
