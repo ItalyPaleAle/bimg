@@ -298,7 +298,7 @@ func vipsAutoRotate(image *C.VipsImage) (*C.VipsImage, error) {
 	return out, nil
 }
 
-func vipsTransformICC(image *C.VipsImage, inputICC string, outputICC string) (*C.VipsImage, error) {
+/*func vipsTransformICC(image *C.VipsImage, inputICC string, outputICC string) (*C.VipsImage, error) {
 	var out *C.VipsImage
 	defer C.g_object_unref(C.gpointer(image))
 
@@ -313,7 +313,7 @@ func vipsTransformICC(image *C.VipsImage, inputICC string, outputICC string) (*C
 	}
 
 	return out, nil
-}
+}*/
 
 func vipsFlip(image *C.VipsImage, direction Direction) (*C.VipsImage, error) {
 	var out *C.VipsImage

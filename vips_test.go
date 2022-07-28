@@ -139,7 +139,10 @@ func TestVipsAutoRotate(t *testing.T) {
 				t.Fatalf("Invalid image orientation after operation: %d != %d", orientation, 0)
 			}
 
-			buf, _ := vipsSave(newImg, vipsSaveOptions{Quality: 95})
+			buf, err := vipsSave(newImg, vipsSaveOptions{Quality: 95})
+			if err != nil {
+				t.Fatalf("Error saving image: %v", err)
+			}
 			if len(buf) == 0 {
 				t.Fatal("Empty image")
 			}

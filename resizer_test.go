@@ -98,9 +98,9 @@ func TestResizeVerticalImage(t *testing.T) {
 					options.Height,
 					ImageTypeName(source.format)),
 				image)
-				if err != nil {
-					t.Error(err)
-				}
+			if err != nil {
+				t.Error(err)
+			}
 		}
 	}
 }
@@ -206,7 +206,10 @@ func TestRotate(t *testing.T) {
 		t.Errorf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_rotate_out.jpg", newImg)
+	err = Write("testdata/test_rotate_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestInvalidRotateDegrees(t *testing.T) {
@@ -227,7 +230,10 @@ func TestInvalidRotateDegrees(t *testing.T) {
 		t.Errorf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_rotate_invalid_out.jpg", newImg)
+	err = Write("testdata/test_rotate_invalid_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestCorruptedImage(t *testing.T) {
@@ -248,7 +254,10 @@ func TestCorruptedImage(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_corrupt_out.jpg", newImg)
+	err = Write("testdata/test_corrupt_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestNoColorProfile(t *testing.T) {
@@ -288,7 +297,10 @@ func TestEmbedExtendColor(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_extend_white_out.jpg", newImg)
+	err = Write("testdata/test_extend_white_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestEmbedExtendWithCustomColor(t *testing.T) {
@@ -305,7 +317,10 @@ func TestEmbedExtendWithCustomColor(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_extend_background_out.jpg", newImg)
+	err = Write("testdata/test_extend_background_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestGaussianBlur(t *testing.T) {
@@ -322,7 +337,10 @@ func TestGaussianBlur(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_gaussian_out.jpg", newImg)
+	err = Write("testdata/test_gaussian_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestSharpen(t *testing.T) {
@@ -339,7 +357,10 @@ func TestSharpen(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_sharpen_out.jpg", newImg)
+	err = Write("testdata/test_sharpen_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestExtractWithDefaultAxis(t *testing.T) {
@@ -356,7 +377,10 @@ func TestExtractWithDefaultAxis(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_extract_defaults_out.jpg", newImg)
+	err = Write("testdata/test_extract_defaults_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestExtractCustomAxis(t *testing.T) {
@@ -373,7 +397,10 @@ func TestExtractCustomAxis(t *testing.T) {
 		t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 	}
 
-	Write("testdata/test_extract_custom_axis_out.jpg", newImg)
+	err = Write("testdata/test_extract_custom_axis_out.jpg", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestExtractOrEmbedImage(t *testing.T) {
@@ -495,7 +522,10 @@ func TestResizePngWithTransparency(t *testing.T) {
 		t.Fatal("Invalid image size")
 	}
 
-	Write("testdata/transparent_out.png", newImg)
+	err = Write("testdata/transparent_out.png", newImg)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestRotationAndFlip(t *testing.T) {
@@ -553,7 +583,10 @@ func TestRotationAndFlip(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		Write(fmt.Sprintf("testdata/exif/%s_out.jpg", file.Name), newImg)
+		err = Write(fmt.Sprintf("testdata/exif/%s_out.jpg", file.Name), newImg)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }
 
@@ -657,13 +690,15 @@ func TestSkipCropIfTooSmall(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			croppedImage, err := Resize(testImgByte, tc.options)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			size, _ := Size(croppedImage)
+			size, err := Size(croppedImage)
+			if err != nil {
+				t.Fatal(err)
+			}
 			if tc.options.Height-size.Height > 1 || tc.options.Width-size.Width > 1 {
 				t.Fatalf("Invalid image size: %dx%d", size.Width, size.Height)
 			}
@@ -672,17 +707,23 @@ func TestSkipCropIfTooSmall(t *testing.T) {
 	}
 }
 
-func runBenchmarkResize(file string, o Options, b *testing.B) {
-	buf, _ := Read(path.Join("testdata", file))
+func runBenchmarkResize(b *testing.B, file string, o Options) {
+	buf, err := Read(path.Join("testdata", file))
+	if err != nil {
+		b.Fatal(err)
+	}
 
 	for n := 0; n < b.N; n++ {
-		Resize(buf, o)
+		_, err = Resize(buf, o)
+		if err != nil {
+			b.Error(err)
+		}
 	}
 }
 
 func BenchmarkRotateJpeg(b *testing.B) {
 	options := Options{Rotate: 180}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkResizeLargeJpeg(b *testing.B) {
@@ -690,7 +731,7 @@ func BenchmarkResizeLargeJpeg(b *testing.B) {
 		Width:  800,
 		Height: 600,
 	}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkResizePng(b *testing.B) {
@@ -698,7 +739,7 @@ func BenchmarkResizePng(b *testing.B) {
 		Width:  200,
 		Height: 200,
 	}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkResizeWebp(b *testing.B) {
@@ -706,22 +747,22 @@ func BenchmarkResizeWebp(b *testing.B) {
 		Width:  200,
 		Height: 200,
 	}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
 
 func BenchmarkConvertToJpeg(b *testing.B) {
 	options := Options{Type: JPEG}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkConvertToPng(b *testing.B) {
 	options := Options{Type: PNG}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkConvertToWebp(b *testing.B) {
 	options := Options{Type: WEBP}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkCropJpeg(b *testing.B) {
@@ -729,7 +770,7 @@ func BenchmarkCropJpeg(b *testing.B) {
 		Width:  800,
 		Height: 600,
 	}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkCropPng(b *testing.B) {
@@ -737,7 +778,7 @@ func BenchmarkCropPng(b *testing.B) {
 		Width:  800,
 		Height: 600,
 	}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkCropWebp(b *testing.B) {
@@ -745,7 +786,7 @@ func BenchmarkCropWebp(b *testing.B) {
 		Width:  800,
 		Height: 600,
 	}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
 
 func BenchmarkExtractJpeg(b *testing.B) {
@@ -755,7 +796,7 @@ func BenchmarkExtractJpeg(b *testing.B) {
 		AreaWidth:  600,
 		AreaHeight: 480,
 	}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkExtractPng(b *testing.B) {
@@ -765,7 +806,7 @@ func BenchmarkExtractPng(b *testing.B) {
 		AreaWidth:  600,
 		AreaHeight: 480,
 	}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkExtractWebp(b *testing.B) {
@@ -775,22 +816,22 @@ func BenchmarkExtractWebp(b *testing.B) {
 		AreaWidth:  600,
 		AreaHeight: 480,
 	}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
 
 func BenchmarkZoomJpeg(b *testing.B) {
 	options := Options{Zoom: 1}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkZoomPng(b *testing.B) {
 	options := Options{Zoom: 1}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkZoomWebp(b *testing.B) {
 	options := Options{Zoom: 1}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
 
 func BenchmarkWatermarkJpeg(b *testing.B) {
@@ -805,7 +846,7 @@ func BenchmarkWatermarkJpeg(b *testing.B) {
 			Background: Color{255, 255, 255},
 		},
 	}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkWatermarkPng(b *testing.B) {
@@ -820,7 +861,7 @@ func BenchmarkWatermarkPng(b *testing.B) {
 			Background: Color{255, 255, 255},
 		},
 	}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkWatermarkWebp(b *testing.B) {
@@ -835,7 +876,7 @@ func BenchmarkWatermarkWebp(b *testing.B) {
 			Background: Color{255, 255, 255},
 		},
 	}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
 
 func BenchmarkWatermarkImageJpeg(b *testing.B) {
@@ -848,7 +889,7 @@ func BenchmarkWatermarkImageJpeg(b *testing.B) {
 			Top:     100,
 		},
 	}
-	runBenchmarkResize("test.jpg", options, b)
+	runBenchmarkResize(b, "test.jpg", options)
 }
 
 func BenchmarkWatermarkImagePng(b *testing.B) {
@@ -861,7 +902,7 @@ func BenchmarkWatermarkImagePng(b *testing.B) {
 			Top:     100,
 		},
 	}
-	runBenchmarkResize("test.png", options, b)
+	runBenchmarkResize(b, "test.png", options)
 }
 
 func BenchmarkWatermarkImageWebp(b *testing.B) {
@@ -874,5 +915,5 @@ func BenchmarkWatermarkImageWebp(b *testing.B) {
 			Top:     100,
 		},
 	}
-	runBenchmarkResize("test.webp", options, b)
+	runBenchmarkResize(b, "test.webp", options)
 }
