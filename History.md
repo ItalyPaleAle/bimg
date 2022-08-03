@@ -1,4 +1,10 @@
-v1.2.0 (italypaleale) / 2022-07-28
+v1.2.1 (italypaleale) / 2022-07-28
+==================================
+
+  * Minor bug fixes
+  * Fixes issues reported by the linter in code and tests
+
+v1.2.0 (italypaleale) / 2022-07-27
 ==================================
 
   * Module is now optimized for libvips 8.13 only
